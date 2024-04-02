@@ -203,7 +203,6 @@ a:hover {
   position: relative;
   background-color: #fff;
   margin-bottom: 3rem;
-  z-index: 2;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -888,6 +887,16 @@ a:hover {
   color: #B6C2D9;
 }
 
+.about-me a {
+  color: #ecd3f3;
+}
+
+.about-me a:hover {
+  color: #e3aef1;
+  text-decoration: none;
+  transition: all 0.5s ease-in-out;
+}
+
 .centering {
   margin-left: auto;
   margin-right: auto;
@@ -1085,23 +1094,34 @@ a:hover {
 # Portfolio
 --------------------------------------------------------------*/
 .work-box {
-  margin-bottom: 3rem;
+  margin-bottom: 20px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   background-color: #fff;
+  transition: all 0.5s;
+  border:#9E90A2 0px solid;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
 }
 
-.work-box:hover img {
-  transform: scale(1.3);
+.work-box:hover {
+  scale: 1.04;
+  border:#9E90A2 5px solid;
+  margin-top: -5px;
+  margin-bottom: 15px;
+  margin-right: -5px;
+  margin-left: -5px;
 }
 
 .work-img {
   display: block;
   overflow: hidden;
+  z-index: 1;
 }
 
 .work-img img {
-  transition: all 1s;
+  transition: all 0.5s;
 }
 
 .portfolio-bg {
@@ -1110,6 +1130,7 @@ a:hover {
 
 .portfolio-img {
   display: inline-block;
+  position: relative;
 }
 
 .portfolio-img img{
@@ -1122,34 +1143,44 @@ a:hover {
 }
 
 .work-content {
-  padding: 2rem 3% 1rem 4%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 3%;
+  border-radius: 8px;
+  margin-top: -8px;
+  position: relative;
+  z-index: 5;
+  background-color: #fff;
 }
 
 .work-content .w-more {
-  color: #fff;
   font-size: 0.8rem;
 }
 
+.work-content .w-more .w-sub {
+  width: 100%;
+  padding-bottom: 20px;
+  color: #333;
+  font-style: italic;
+  font-size: 0.70rem;
+}
+
 .work-content .w-more .w-ctegory {
-  color: #9E90A2;
+  height: 40px;
+  width: 100%;
 }
 
-.work-content .w-like {
-  font-size: 2.5rem;
-  color: #9E90A2;
-  float: right;
-}
-
-.work-content .w-like a {
-  color: #9E90A2;
-}
-
-.work-content .w-like .num-like {
-  font-size: 0.7rem;
+.work-content .w-more .w-ctegory .w-tag {
+  background-color: #9E90A2;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px;
+  margin-right: 4px;
 }
 
 .w-title {
   font-size: 1.2rem;
+  margin: 0px;
 }
 
 /*--------------------------------------------------------------
@@ -1212,6 +1243,17 @@ a:hover {
   font-size: 15px;
 }
 
+.portfolio-details .portfolio-info .tag {
+  background-color: #9E90A2;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px;
+  margin-right: 4px;
+  line-height: 30px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 .portfolio-details .portfolio-info table tr {
   max-height: 100%;
 }
@@ -1247,6 +1289,10 @@ a:hover {
 
 .portfolio-details .portfolio-description p a {
   color: #0062d3;
+}
+
+.portfolio-details .portfolio-description ul li ul li {
+  margin-top: 10px;
 }
 
 /*--------------------------------------------------------------

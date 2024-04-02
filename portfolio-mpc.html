@@ -54,17 +54,17 @@
     </div>
   </header><!-- End Header -->
 
-  <div class="hero hero-single route bg-image" style="background-image: url(assets/img/ProjectImages/WizardTag/background.jpg)">
+  <div class="hero hero-single route bg-image" style="background-image: url(assets/img/ProjectImages/MPC/background.jpeg)">
     <div class="overlay-mf"></div>
     <div class="hero-content display-table">
       <div class="table-cell">
         <div class="container">
-          <h2 class="hero-title mb-4">Wizard Tag</h2>
+          <h2 class="hero-title mb-4">Quadrotor Controller</h2>
           <ol class="breadcrumb d-flex justify-content-center">
             <li class="breadcrumb-item">
               <a href="index.html">Home</a>
             </li>
-            <li class="breadcrumb-item active">Wizard Tag</li>
+            <li class="breadcrumb-item active">Quadrotor Controller</li>
           </ol>
         </div>
       </div>
@@ -84,25 +84,31 @@
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/WizardTag/Lights.png" alt="">
+                    <img src="assets/img/ProjectImages/MPC/MPC1.png" alt="">
                   </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/WizardTag/Detector.jpeg" alt="">
+                    <img src="assets/img/ProjectImages/MPC/MPC2.png" alt="">
                   </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/WizardTag/Phone.png" alt="">
+                    <img src="assets/img/ProjectImages/MPC/MPC3.png" alt="">
                   </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/WizardTag/Wand.jpeg" alt="">
+                    <img src="assets/img/ProjectImages/MPC/MPC4.png" alt="">
+                  </div>
+                </div>
+
+                <div class="swiper-slide">
+                  <div class="portfolio-img">
+                    <img src="assets/img/ProjectImages/MPC/MPC5.png" alt="">
                   </div>
                 </div>
 
@@ -117,10 +123,10 @@
                 <div class="portfolio-description">
                   <h2>Description</h3>
                   <p>
-                    A four person group project with a very generic goal of using a raspberry pi in addition to some provided
-                    sensors to create some kind of interconnected IOT device. Our group decided to use a set of Infrared 
-                    sensors and LEDs to create a form of Laser tag - but with a twist. Instead of laser 'Guns', the weapon of
-                    choice was a Wand which had to be waved to fire (controlled using an accelerometer).
+                    Coursework for the Predictive Control Module run by Professor Eric Kerrigan. The objective 
+                    was to design a Model Predictive Controller for a simulated Quadrotor capable of flying 
+                    between an initial and target point whilst avoiding elliptical obstacles; all within a certain
+                    amount of time.
                   </p>
                 </div>
               </div>
@@ -131,7 +137,11 @@
                   <table>
                     <tr>
                       <td class="title">Skills:</td>
-                      <td>Python</td>
+                      <td>
+                        <span class="tag"> Model Predictive Control </span>
+                        <span class="tag"> Linear Algebra </span>
+                        <span class="tag"> Matlab </span>
+                      </td>
                     </tr>
                     <tr>
                       <td class="title">Scope:</td>
@@ -139,31 +149,50 @@
                     </tr>
                     <tr>
                       <td class="title">Date:</td>
-                      <td>February 2023</td>
+                      <td>March 2024</td>
                     </tr>
                   </table>
-                  <div class="git-button">
-                    <form action="https://github.com/souramam1/Laser_Tag_Game">
-                      <button type="submit" class="button button-a button-wide button-rouded">Github</button>
-                    </form>
-                  </div>
+                  
                 </div>
               </div>
             </div>
             
             <div class="portfolio-description">
-              <h2>Responsibilities</h2>
-              <p>
-                In this project, I was primarily responsible for the development of the chest mounted Detector.
-              </p>
+              <h2>Features</h2>
               <ul>
                 <li>
-                  Implemented circuitry for the IR detectors and used interrupts on the Raspberry PI to trigger
-                  a specified function when infrared light of a certain frequency is detected.
+                  <strong> Nonlinear Dynamics </strong>: System dynamics were included in the optimal control problem by making use of 
+                  numerical integration methods. Initial tests were conducted using Explicit Euler which worked but had large initial 
+                  errors of ~0.614 (error after the first controller iteration) resulting in early inequality violations and slower guess 
+                  convergence. An improved performance was demonstrated by RK4 with an error of ~0.121. Despite it's performance, accuracy 
+                  issues occurred when testing with ellipse constraints, resulting in undesirable constraint violations. The method 
+                  settled upon was the implicit Trapezoidal rule which although less accurate (initial error of ~0.278) resulted in 
+                  improved constraint adherence ( as implicit methods work better with stiff functions ). To account for the full 
+                  nonlinear dynamics of the quadrotor these equilibrium constraints were computed during runtime with the system being
+                  discretized for each optimisation step. Overall this resulted in accurate state predictions, provided additional 
+                  flexibility in parameter tuning and reduced the likelihood of model failure due to the simplifications imposed by 
+                  linearisation. This all came at the cost of an increased computational load as large matrices had to be rapidly 
+                  constructed, resulting in even simple courses taking significant amounts of time to run.
                 </li>
                 <li>
-                  Added additional game logic and hardware for things like a button to control game participation
-                  as well as additional LEDs for status reporting (such as lives).
+                  <strong> Dynamic Inequalities </strong>: Due to the obstacles, nonlinear constraints had to be implemented for 
+                  collision avoidance which was done through a number of auxiliary variables. By imposing linear constraints on 
+                  the auxiliary variables and adding them to the state to be optimised it was possible to impose an OR inequality,
+                  valid when the quadrotor was above OR outside of the ellipses, allowing for full obstacle avoidance.
+                </li>
+                <li>
+                  <strong> Temporal Costs </strong>: A number of temporal costs where also necessary to complete the tasks as the
+                  quadrotor had to complete courses within a certain amount of time (bounds cost) and with a total thrust above 
+                  equilibrium below a certain amount (thrust cost).
+                </li>
+                <li>
+                  <strong> Robustness </strong>: A number of additions were made to make the controller robust to uncertainties and 
+                  unseen shapes. An important variable is the equilibrium thrust, a value which changes when perturbations are applied 
+                  to the model. This causes major issues as this value is used for the thrust cost, resulting in possible course 
+                  failure due to incorrect punishment. To estimate this parameter a 'drop test' is conducted during the first time step, 
+                  where the nominal equilibrium thrust is provided and the change in the z velocity is measured on the next. By 
+                  calculating the actual acceleration and comparing it to the nominal, it is possible to calculate the equilibrium thrust
+                  needed with the perturbations in place.
                 </li>
               </ul>
             </div>

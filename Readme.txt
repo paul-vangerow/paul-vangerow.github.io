@@ -1,4 +1,4 @@
-Thanks for downloading this template!
+Adapted from a Template by BootstrapMade:
 
 Template Name: DevFolio
 Template URL: https://bootstrapmade.com/devfolio-bootstrap-portfolio-html-template/

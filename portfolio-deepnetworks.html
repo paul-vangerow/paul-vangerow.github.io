@@ -54,17 +54,17 @@
     </div>
   </header><!-- End Header -->
 
-  <div class="hero hero-single route bg-image" style="background-image: url(assets/img/ProjectImages/Enumerate/background.jpg)">
+  <div class="hero hero-single route bg-image" style="background-image: url(assets/img/ProjectImages/DL/background.png)">
     <div class="overlay-mf"></div>
     <div class="hero-content display-table">
       <div class="table-cell">
         <div class="container">
-          <h2 class="hero-title mb-4">Enumerate</h2>
+          <h2 class="hero-title mb-4">Generative Models</h2>
           <ol class="breadcrumb d-flex justify-content-center">
             <li class="breadcrumb-item">
               <a href="index.html">Home</a>
             </li>
-            <li class="breadcrumb-item active">Enumerate</li>
+            <li class="breadcrumb-item active">Generative Models</li>
           </ol>
         </div>
       </div>
@@ -84,25 +84,25 @@
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/Enumerate/Main.png" alt="">
+                    <img src="assets/img/ProjectImages/DL/GAN_Images.png" alt="">
                   </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/Enumerate/Translate.png" alt="">
+                    <img src="assets/img/ProjectImages/DL/GAN_Training.png" alt="">
                   </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/Enumerate/Flashcard.png" alt="">
+                    <img src="assets/img/ProjectImages/DL/VAE_Embeddings.png" alt="">
                   </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="portfolio-img">
-                    <img src="assets/img/ProjectImages/Enumerate/Settings.png" alt="">
+                    <img src="assets/img/ProjectImages/DL/VAE_Images.png" alt="">
                   </div>
                 </div>
 
@@ -117,9 +117,9 @@
                 <div class="portfolio-description">
                   <h2>Description</h3>
                   <p>
-                    Enumerate is an app designed to assist with the memorisation of word translations 
-                    for foreign languages. It accomplishes this by providing flashcards and translate
-                    tasks based on a manually written or parsed word list.
+                    Coursework for the Deep Learning Module. It involved building, training and tuning two types of 
+                    latent space generative models. The first was a Convolutional VAE trained on MNIST and
+                    the second a DCGAN trained on CIFAR-10.
                   </p>
                 </div>
               </div>
@@ -131,48 +131,81 @@
                     <tr>
                       <td class="title">Skills:</td>
                       <td>
-                        <span class="tag">SwiftUI</span>
-                        <span class="tag">Swift</span>
+                        <span class="tag">Deep Learning</span>
+                        <span class="tag">VAE</span>
+                        <span class="tag">GAN</span>
+                        <span class="tag">Pytorch</span>
+                        <span class="tag">Python</span>
                       </td>
                     </tr>
                     <tr>
                       <td class="title">Scope:</td>
-                      <td>Personal</td>
+                      <td>University</td>
                     </tr>
                     <tr>
                       <td class="title">Date:</td>
-                      <td>August 2023</td>
+                      <td>February 2024</td>
                     </tr>
                   </table>
-                  <div class="git-button">
-                    <form action="https://github.com/paul-vangerow/Enumerate">
-                      <button type="submit" class="button button-a button-wide button-rouded">Github</button>
-                    </form>
-                  </div>
                 </div>
               </div>
             </div>
             
             <div class="portfolio-description">
-              <h2>Features</h2>
+              <h2>Components</h2>
               <ul>
                 <li>
-                  <strong>Excessive Repetition</strong>: Splits a provided wordlist into multiple 'milestones'. 
-                  Each 'milestone' contains 10 new words which are learned at the beginning through flashcards.
-                  The rest of the cards in the 'milestone' are translate tasks for every previously encountered
-                  word. When using a word list based on how common a specific word is, this results in more 
-                  common words being repeated often - hopefully resulting in better memory achievements.
+                  <strong>Variational Auto Encoder</strong>: The VAE had to be built from scratch, requiring extensive
+                  research and testing to ensure a sufficient performance was achieved. Most of the design decisions
+                  made were a result of repeated experimentation and testing:
+                  <ul>
+                    <li><strong>Cost Function</strong>: A reconstruction loss added to a KLD term for the distribution divergence from 
+                      the prior, modified by a parameter beta. For the reconstruction loss there were two main options: the 
+                      commonly used MSE, but also BCE with a Sigmoid activation (as MNIST uses only one channel). Extensive explorations
+                      were conducted using both options and very little difference was observed besides requiring different magnitudes 
+                      of Beta. In the end, the MSE loss was settled on since it produced a more disentangled latent space for each 
+                      image class (which could be seen in the TSNE embeddings).
+                      
+                      The KLD term was implemented using the analytical form with a Normal Gaussian Prior. This prior was chosen
+                      for two main reasons: Image generation and Latent Space Exploration. Using a Gaussian Normal helped with 
+                      image generation as it ensured that the latent space representations of all the features were similar, 
+                      meaning generation could involve simply filling the latent space with random samples from a Normal Gaussian 
+                      which could then be passed through the decoder to generate images. The second is that the normal gaussian 
+                      has a logvar and mean of zero, resulting in a number of network activations being driven to 0, promoting 
+                      sparsity and disentangelement of the latent space.
+                    </li>
+                    <li><strong>Structure</strong>: Additional explorations were made in regards to the architecture of the
+                      encoder and decoder. To reduce the number of parameters two downconvolution layers were used with stride 2,
+                      reducing the image size from 28x28 to 7x7, followed by two linear layers to bottleneck the forwards pass and
+                      encourage a good latent space representation; these layers were interspersed with batchnorms and leaky ReLU
+                      layers to increase convergence speed. The decoder was implemented as a reversed encoder.
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <strong>List Parsing</strong>: Enumerate has an inbuilt parser for wordlists. It was
-                  designed for lists found on certain language learning websites, but can also work with
-                  manually created ones. Through the use of this parser, the time needed to configure the desired
-                  wordpairs becomes trivial - giving more time for actual memorisation.
-                </li>
-                <li>
-                  <strong>Text to Speech</strong>: Enumerate uses the iPhone's accessibility settings to
-                  create audio feedback when going through the cards (any card in a foreign language is
-                  read out by the TTS voice configured). 
+                  <strong>Deep Convolutional Generative Adverserial Network</strong>: The GAN was built based on the model proposed by 
+                  <a href="https://arxiv.org/abs/1511.06434" style="color: #d9c4df;"> Unsupervised Representation Learning with Deep Convolutional Generative 
+                    Adversarial Networks</a> and tuned once again through testing different modifications:
+                  <ul>
+                    <li><strong>Kernel Size</strong>: Performance was tested with different Kernel Sizes, 3x3 had very poor performance, 
+                      producing images with strange colours and patterns. Kernels of 7x7, 9x9 and 11x11 generated images that appear 
+                      similar to those created by the 5x5, though with seemingly fewer details or discernable shapes (possibly because many 
+                      kernels act on each pixel causing some level of 'smoothing').
+                    </li>
+                    <li><strong>Latent Space</strong>: Different latent space sizes were also explored, a size of 200 resulted in more 
+                      diverse images, though with fewer discernable items; a size of 50 created less diverse and lower quality images,
+                      though with more distinction. Running the model with 75 seemed to capture the best of both worlds, producing images  
+                      containing a larger array of diverse yet recognisable items.
+                    </li>
+                    <li><strong>Epochs</strong> When testing it was discovered that models with loss curves that remain at an 
+                      'equilibrium' of sort for a number of epochs tended to perform better when simply trained for longer. As 
+                      the network is adverserial, the loss is no real indication of overall performance as the Generator and 
+                      Discriminator can improve at the same rate. The network was trained for 20, 50 and 100 epochs, demonstrating 
+                      overall improved image generation after longer training. Analysing loss curves showed that going for too long 
+                      resulted in overfitting as the Discriminator slowly learned all the images in the dataset, naturally making it 
+                      discriminate more efficiently.
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>
